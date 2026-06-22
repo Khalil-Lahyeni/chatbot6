@@ -1,0 +1,29 @@
+:host { display: contents; }
+
+.rp-app {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  height: 100vh;
+  width: 100vw;
+  background: var(--c-bg);
+  color: var(--c-fg);
+}
+
+.rp-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.rp-page {
+  flex: 1;
+  overflow-y: auto;
+  padding: 3px 3px 3px;
+}
+
+.rp-loading-wrap {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+}

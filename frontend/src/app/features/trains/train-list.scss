@@ -1,0 +1,34 @@
+.train-list-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+
+.train-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.no-trains-card {
+  grid-column: 1 / -1;
+  background: var(--c-surface);
+  border: 1px dashed var(--c-bd);
+  border-radius: var(--r-lg);
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--c-fg-mute);
+  font-size: 14px;
+}

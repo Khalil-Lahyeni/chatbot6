@@ -1,0 +1,19 @@
+<div class="rp-app">
+  <app-sidebar
+    [collapsed]="collapsed()"
+    (collapsedChange)="onCollapsedChange($event)">
+  </app-sidebar>
+
+  <div class="rp-main">
+    <app-header></app-header>
+    <div class="rp-page">
+      @if (auth.isLoading()) {
+        <div class="rp-loading-wrap">
+          <app-loading-spinner />
+        </div>
+      } @else {
+        <router-outlet />
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<a [routerLink]="isEditing() ? null : ['/train', train().id]" class="train-card-link" [class.is-editing-link]="isEditing()">
+  <div class="train-card" [class.is-editing]="isEditing()">
+    <!-- Top-Right Edit Button (Pencil Icon) -->
+    @if (!isEditing()) {
+      <button class="edit-card-btn" (click)="startEdit($event)" aria-label="Edit train">
+        <app-icon name="edit" [size]="14" [stroke]="2.0" />
+      </button>
+    }
+
+    <div class="card-header">
+      <app-icon name="train" [size]="20" class="train-icon" />
+      @if (!isEditing()) {
+        <span class="header-title">{{ train().trainName }}</span>
+      } @else {
+        <input
+          type="text"
+          class="inline-input header-title-input"
+          [value]="editName()"
+          (input)="editName.set($any($event.target).value)"
+          (click)="$event.stopPropagation()"/>
+      }
+    </div>
+    
+    <div class="card-body">
+      <div class="info-column">
+        <span class="info-label">Mission:</span>
+        @if (!isEditing()) {
+          <span class="info-value">{{ train().mission }}</span>
+        } @else {
+          <input
+            type="text"
+            class="inline-input info-value-input"
+            [value]="editMission()"
+            (input)="editMission.set($any($event.target).value)"
+            (click)="$event.stopPropagation()"/>
+        }
+      </div>
+      <div class="info-column">
+        <span class="info-label">Diversity:</span>
+        @if (!isEditing()) {
+          <span class="info-value">{{ train().diversity }}</span>
+        } @else {
+          <input
+            type="text"
+            class="inline-input info-value-input"
+            [value]="editDiversity()"
+            (input)="editDiversity.set($any($event.target).value)"
+            (click)="$event.stopPropagation()"/>
+        }
+      </div>
+      <div class="info-column">
+        <span class="info-label">Baseline:</span>
+        @if (!isEditing()) {
+          <span class="info-value">{{ train().baseline || 'N/A' }}</span>
+        } @else {
+          <input
+            type="text"
+            class="inline-input info-value-input"
+            [value]="editBaseline()"
+            (input)="editBaseline.set($any($event.target).value)"
+            (click)="$event.stopPropagation()"/>
+        }
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="status-block">
+        <span class="info-label">Status:</span>
+        <div class="status-indicator" [ngClass]="statusClass">
+          <span class="status-dot"></span>
+          <span class="status-text">{{ train().status }}</span>
+        </div>
+        <span class="updated-time">Last updated: 5 minutes</span>
+      </div>
+
+      @if (!isEditing()) {
+        <div class="view-dashboard-btn">
+          <span>View Dashboard</span>
+          <app-icon name="arrow" [size]="14" class="arrow-icon" />
+        </div>
+      } @else {
+        <div class="edit-actions" (click)="$event.stopPropagation()">
+          <button class="save-btn" (click)="saveChanges($event)">
+            <span>Save</span>
+            <app-icon name="arrow" [size]="14" class="arrow-icon" />
+          </button>
+          <button class="cancel-btn" (click)="cancelChanges($event)">
+            <span>✕ Cancel</span>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</a>

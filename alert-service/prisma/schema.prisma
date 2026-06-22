@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Alert {
+  id        String   @id @default(uuid())
+  message   String?
+  type      String?
+  status    String?
+  createdAt DateTime @default(now())
+}
+
+model RealAlert {
+  id          Int      @id @default(autoincrement())
+  trainId     String
+  type        Int
+  createdAt   DateTime @default(now())
+  callState   Int
+  description String
+  car         Int
+  carName     String
+  intercom    String
+  cameras     String[]
+
+  @@map("real_alert")
+}
+
+model AnomalyAlert {
+  id          Int      @id @default(autoincrement())
+  probability Float
+  type        Int
+  trainId     String
+  description String
+  createdAt   DateTime @default(now())
+
+  @@map("anomaly_alert")
+}
+
+model PredictedAlert {
+  id          Int      @id @default(autoincrement())
+  probability Float
+  type        Int
+  trainId     String
+  description String
+  createdAt   DateTime @default(now())
+
+  @@map("predicted_alert")
+}

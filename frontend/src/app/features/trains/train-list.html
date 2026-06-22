@@ -1,0 +1,11 @@
+<div class="train-list-container">
+  <div class="train-grid">
+    @for (train of filteredTrains(); track train.id) {
+      <app-train-card [train]="train" (trainUpdated)="onTrainUpdated($event)" />
+    } @empty {
+      <div class="no-trains-card">
+        <p>No trains found in the fleet.</p>
+      </div>
+    }
+  </div>
+</div>

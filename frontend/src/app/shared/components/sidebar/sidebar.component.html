@@ -1,0 +1,62 @@
+<aside
+  class="rp-sidebar"
+  [class.is-collapsed]="collapsed()"
+  (mouseenter)="onEnter()"
+  (mouseleave)="onLeave()">
+
+  <div class="rp-brand">
+    <span class="rp-brand-mark" aria-hidden="true">
+      <img src="assets/ACTIA-COVER.jpg" alt="ACTIA Logo" />
+    </span>
+    @if (!collapsed()) {
+      <span class="rp-brand-text">
+        <span class="rp-brand-name">Fleet Management</span>
+        <span class="rp-brand-sub">Operations</span>
+      </span>
+    }
+  </div>
+
+  @if (!collapsed()) {
+    <div class="rp-nav-label">NAVIGATION</div>
+  }
+
+  <nav class="rp-nav">
+    @for (it of items(); track it.id) {
+      <a
+        class="rp-nav-item"
+        [routerLink]="it.route"
+        routerLinkActive="is-active"
+        #rla="routerLinkActive">
+        <span class="rp-nav-ic">
+          <app-icon [name]="it.icon" [size]="18"/>
+        </span>
+        @if (!collapsed()) {
+          <span class="rp-nav-text">{{ it.label }}</span>
+          @if (it.badge) {
+            <span
+              class="rp-nav-badge"
+              [class.is-live]="it.badge === 'LIVE'"
+              [class.is-crit]="it.id === 'alerts'">{{ it.badge }}</span>
+          }
+        }
+        @if (rla.isActive) { <span class="rp-nav-rail" aria-hidden="true"></span> }
+      </a>
+    }
+  </nav>
+
+  <!-- @if (!collapsed()) {
+    <div class="rp-sidebar-foot">
+      <div class="rp-status-card">
+        <div class="rp-status-row">
+          <span class="rp-pulse-dot"></span>
+          <span class="rp-status-label">System operational</span>
+        </div>
+        <div class="rp-status-meta">
+          <span>Uptime <b>{{ status().uptime }}</b></span>
+          <span>•</span>
+          <span>{{ status().version }}</span>
+        </div>
+      </div>
+    </div>
+  } -->
+</aside>

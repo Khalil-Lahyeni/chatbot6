@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ── Tokens ── */
+:root {
+  --blue:      #3b5bdb;
+  --blue-dark: #2f4ec0;
+  --grey-900:  #111827;
+  --grey-700:  #374151;
+  --grey-500:  #6b7280;
+  --grey-300:  #d1d5db;
+  --grey-100:  #f3f4f6;
+  --white:     #ffffff;
+  --error:     #dc2626;
+  --error-bg:  #fef2f2;
+  --error-bd:  #fecaca;
+  --r-sm:      8px;
+  --r-lg:      16px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Page ── */
+html, body {
+  height: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  color: var(--grey-700);
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% -10%, rgba(59,91,219,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 110%, rgba(58,170,53,.09) 0%, transparent 55%),
+    #f0f2f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+/* ── Neutraliser les wrappers Keycloak ──
+   display:contents supprime la boîte, les enfants remontent dans le flex body */
+.login-pf-page,
+#kc-header,
+#kc-header-wrapper,
+#kc-content,
+#kc-content-wrapper,
+.row,
+[class*="col-sm-"],
+[class*="col-md-"],
+[class*="col-lg-"] { display: contents; }
+
+.card-pf,
+#kc-form-wrapper {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+/* ── Card ── */
+.actia-card {
+  width: 100%;
+  max-width: 460px;
+  background: var(--white);
+  border-radius: var(--r-lg);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.06),
+    0 4px 6px -1px rgba(0,0,0,.07),
+    0 20px 48px -8px rgba(17,24,39,.12);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Branding ── */
+.actia-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 28px;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--grey-100);
+}
+
+.actia-logo-wrap {
+  flex-shrink: 0;
+  background: var(--grey-100);
+  border-radius: var(--r-sm);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+}
+
+.actia-logo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.actia-brand-divider {
+  width: 1px;
+  height: 32px;
+  background: var(--grey-300);
+  flex-shrink: 0;
+}
+
+.actia-brand-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.actia-app-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--grey-900);
+  letter-spacing: -0.01em;
+}
+
+.actia-app-sub {
+  font-size: 11.5px;
+  color: var(--grey-500);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Titre formulaire ── */
+.actia-form-header { margin-bottom: 24px; }
+
+.actia-form-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--grey-900);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.actia-form-header p {
+  font-size: 13px;
+  color: var(--grey-500);
+  margin-top: 5px;
+  line-height: 1.5;
+}
+
+/* ── Alerte ── */
+.actia-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.actia-alert svg { flex-shrink: 0; margin-top: 1px; }
+
+.actia-alert-error {
+  background: var(--error-bg);
+  border: 1px solid var(--error-bd);
+  color: var(--error);
+}
+
+/* ── Formulaire ── */
+.actia-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.actia-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.actia-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--grey-700);
+}
+
+.actia-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.actia-input-icon {
+  position: absolute;
+  left: 13px;
+  color: var(--grey-500);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.actia-input {
+  width: 100%;
+  padding: 11px 14px 11px 40px;
+  border: 1.5px solid var(--grey-300);
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--grey-900);
+  background: var(--grey-100);
+  outline: none;
+  -webkit-appearance: none;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+}
+
+.actia-input:focus {
+  border-color: var(--blue);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(59,91,219,.14);
+}
+
+.actia-input::placeholder { color: var(--grey-500); opacity: .7; }
+
+.actia-input--password { padding-right: 44px; }
+
+.actia-field--error .actia-input {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
+.actia-field--error .actia-input:focus {
+  box-shadow: 0 0 0 3px rgba(220,38,38,.12);
+}
+
+/* ── Toggle mot de passe ── */
+.actia-toggle-pwd {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  padding: 4px;
+  color: var(--grey-500);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: color .15s;
+}
+
+.actia-toggle-pwd:hover { color: var(--grey-900); }
+
+/* ── Options ── */
+.actia-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: -4px;
+}
+
+.actia-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--grey-500);
+  cursor: pointer;
+  user-select: none;
+}
+
+.actia-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.actia-checkbox-mark {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--grey-300);
+  border-radius: 4px;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .15s, border-color .15s;
+}
+
+.actia-checkbox input:checked ~ .actia-checkbox-mark {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+.actia-checkbox input:checked ~ .actia-checkbox-mark::after {
+  content: '';
+  display: block;
+  width: 9px;
+  height: 6px;
+  border-left: 1.5px solid white;
+  border-bottom: 1.5px solid white;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+.actia-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue);
+  text-decoration: none;
+  margin-left: auto;
+  transition: color .15s;
+}
+
+.actia-link:hover { color: var(--blue-dark); text-decoration: underline; }
+
+/* ── Bouton submit ── */
+.actia-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 20px;
+  margin-top: 6px;
+  background: linear-gradient(135deg, var(--blue) 0%, #4f6ee8 100%);
+  color: var(--white);
+  border: none;
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(59,91,219,.3), 0 4px 12px rgba(59,91,219,.25);
+  transition: background .15s, box-shadow .15s, transform .1s;
+}
+
+.actia-btn:hover {
+  background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 100%);
+  box-shadow: 0 1px 2px rgba(59,91,219,.4), 0 6px 20px rgba(59,91,219,.35);
+}
+
+.actia-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(59,91,219,.3);
+}
+
+/* ── Footer ── */
+.actia-footer {
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--grey-500);
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--grey-100);
+}
+
+/* ── Responsive ── */
+@media (max-width: 520px) {
+  body { padding: 16px 12px; align-items: flex-start; padding-top: 32px; }
+  .actia-card { padding: 28px 24px; }
+  .actia-brand { flex-wrap: wrap; }
+  .actia-form-header h1 { font-size: 20px; }
+}

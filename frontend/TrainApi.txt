@@ -1,0 +1,68 @@
+# Monitoring API via API Gateway
+
+## Base URL via Gateway
+- `http://localhost:8888`
+
+## Endpoints principaux
+
+### 1. Créer un train
+- Méthode : `POST`
+- URL Gateway : `/api/monitoring/trains`
+- Corps : `TrainRequest`
+- Réponse : `201 Created`
+- Body : `TrainResponse`
+
+### 2. Récupérer un train par id
+- Méthode : `GET`
+- URL Gateway : `/api/monitoring/trains/{id}`
+- Réponse : `200 OK`
+- Body : `TrainResponse`
+
+### 3. Lister les trains
+- Méthode : `GET`
+- URL Gateway : `/api/monitoring/trains`
+- Query params possibles :
+  - `page` (default `0`)
+  - `size` (default `20`)
+  - `sort` (default `updateAt,desc`)
+- Réponse : `200 OK`
+- Body : page de `TrainResponse`
+
+### 4. Mettre à jour un train
+- Méthode : `PUT`
+- URL Gateway : `/api/monitoring/trains/{id}`
+- Corps : `TrainRequest`
+- Réponse : `200 OK`
+- Body : `TrainResponse`
+
+### 5. Supprimer un train
+- Méthode : `DELETE`
+- URL Gateway : `/api/monitoring/trains/{id}`
+- Réponse : `204 No Content`
+
+## Payload exemple (PUT)
+
+```json
+{
+  "name": "Train A",
+  "mission": "Maintenance",
+  "baseline": "baseline-123",
+  "diversity": "high",
+  "database": "postgres"
+}
+```
+
+## Exemple de réponse `TrainResponse`
+
+```json
+{
+  "id": 1,
+  "name": "Train A",
+  "mission": "Maintenance",
+  "baseline": "baseline-123",
+  "diversity": "high",
+  "database": "postgres",
+  "updateAt": "2026-06-16T12:00:00Z"
+}
+
+

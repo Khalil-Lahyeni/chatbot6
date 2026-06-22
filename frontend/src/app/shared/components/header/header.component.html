@@ -1,0 +1,241 @@
+<header class="rp-header">
+  <div class="rp-crumbs">
+    @if (isTrainsPage()) {
+      <div class="rp-control-bar">
+        <!-- Search bar -->
+        <div class="rp-search-bar">
+          <app-icon name="search" [size]="15" [stroke]="2.0" class="icon-search"/>
+          <input
+            type="text"
+            placeholder="Search trains by name..."
+            [value]="filterService.searchQuery()"
+            (input)="onSearch($event)"/>
+        </div>
+
+        <!-- Sort by dropdown -->
+        <div class="rp-dropdown-wrap">
+          <button class="rp-dropdown-btn" (click)="toggleSort($event)" [class.is-active]="sortOpen()">
+            <app-icon name="sort" [size]="14" [stroke]="2.0"/>
+            <span>Sort by</span>
+            <app-icon name="chevronD" [size]="12" class="arrow-indicator"/>
+          </button>
+          
+          @if (sortOpen()) {
+            <div class="rp-dropdown-menu" (click)="$event.stopPropagation()">
+              <button
+                class="rp-dropdown-item"
+                [class.active]="filterService.sortBy() === 'name'"
+                (click)="filterService.sortBy.set('name'); sortOpen.set(false)">
+                <span>Name (A-Z)</span>
+                @if (filterService.sortBy() === 'name') {
+                  <app-icon name="check" [size]="12" [stroke]="2.5"/>
+                }
+              </button>
+              <button
+                class="rp-dropdown-item"
+                [class.active]="filterService.sortBy() === 'status'"
+                (click)="filterService.sortBy.set('status'); sortOpen.set(false)">
+                <span>Status</span>
+                @if (filterService.sortBy() === 'status') {
+                  <app-icon name="check" [size]="12" [stroke]="2.5"/>
+                }
+              </button>
+              <button
+                class="rp-dropdown-item"
+                [class.active]="filterService.sortBy() === 'lastUpdated'"
+                (click)="filterService.sortBy.set('lastUpdated'); sortOpen.set(false)">
+                <span>Last Updated</span>
+                @if (filterService.sortBy() === 'lastUpdated') {
+                  <app-icon name="check" [size]="12" [stroke]="2.5"/>
+                }
+              </button>
+            </div>
+          }
+        </div>
+
+        <!-- Filter dropdown -->
+        <div class="rp-dropdown-wrap">
+          <button class="rp-dropdown-btn" (click)="toggleFilter($event)" [class.is-active]="filterOpen()">
+            <app-icon name="filter" [size]="14" [stroke]="2.0"/>
+            <span>Filter</span>
+            <app-icon name="chevronD" [size]="12" class="arrow-indicator"/>
+          </button>
+
+          @if (filterOpen()) {
+            <div class="rp-dropdown-menu rp-filter-menu" (click)="$event.stopPropagation()">
+              <!-- Mission Section -->
+              <div class="rp-filter-section">
+                <div class="rp-filter-section-title">Mission</div>
+                <label class="rp-checkbox-label">
+                  <input
+                    type="checkbox"
+                    [checked]="filterService.selectedMissions().includes('Passengers')"
+                    (change)="filterService.toggleMission('Passengers')"/>
+                  <span class="rp-checkbox-custom"></span>
+                  <span class="label-text">Passengers</span>
+                </label>
+                <label class="rp-checkbox-label">
+                  <input
+                    type="checkbox"
+                    [checked]="filterService.selectedMissions().includes('Freight')"
+                    (change)="filterService.toggleMission('Freight')"/>
+                  <span class="rp-checkbox-custom"></span>
+                  <span class="label-text">Freight</span>
+                </label>
+                <label class="rp-checkbox-label">
+                  <input
+                    type="checkbox"
+                    [checked]="filterService.selectedMissions().includes('Maintenance')"
+                    (change)="filterService.toggleMission('Maintenance')"/>
+                  <span class="rp-checkbox-custom"></span>
+                  <span class="label-text">Maintenance</span>
+                </label>
+              </div>
+
+              <!-- Status Section -->
+              <div class="rp-filter-section">
+                <div class="rp-filter-section-title">Status</div>
+                <label class="rp-checkbox-label">
+                  <input
+                    type="checkbox"
+                    [checked]="filterService.selectedStatuses().includes('In operation')"
+                    (change)="filterService.toggleStatus('In operation')"/>
+                  <span class="rp-checkbox-custom"></span>
+                  <span class="label-text">In operation</span>
+                </label>
+                <label class="rp-checkbox-label">
+                  <input
+                    type="checkbox"
+                    [checked]="filterService.selectedStatuses().includes('Stopped')"
+                    (change)="filterService.toggleStatus('Stopped')"/>
+                  <span class="rp-checkbox-custom"></span>
+                  <span class="label-text">Stopped</span>
+                </label>
+              </div>
+
+              <!-- Baseline Section -->
+              <div class="rp-filter-section">
+                <div class="rp-filter-section-title">Baseline</div>
+                <label class="rp-checkbox-label">
+                  <input
+                    type="checkbox"
+                    [checked]="filterService.selectedBaselines().includes('1.1.1')"
+                    (change)="filterService.toggleBaseline('1.1.1')"/>
+                  <span class="rp-checkbox-custom"></span>
+                  <span class="label-text">1.1.1</span>
+                </label>
+                <label class="rp-checkbox-label">
+                  <input
+                    type="checkbox"
+                    [checked]="filterService.selectedBaselines().includes('1.2.1')"
+                    (change)="filterService.toggleBaseline('1.2.1')"/>
+                  <span class="rp-checkbox-custom"></span>
+                  <span class="label-text">1.2.1</span>
+                </label>
+                <label class="rp-checkbox-label">
+                  <input
+                    type="checkbox"
+                    [checked]="filterService.selectedBaselines().includes('N/A')"
+                    (change)="filterService.toggleBaseline('N/A')"/>
+                  <span class="rp-checkbox-custom"></span>
+                  <span class="label-text">N/A</span>
+                </label>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Active chips -->
+        @if (filterService.activeFilters().length > 0) {
+          <div class="rp-filter-chips">
+            @for (chip of filterService.activeFilters(); track chip.id) {
+              <div class="rp-chip">
+                <span class="chip-text">{{ chip.label }}</span>
+                <button
+                  class="rp-chip-clear"
+                  (click)="filterService.removeFilter(chip)"
+                  aria-label="Remove filter">
+                  ✕
+                </button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="rp-header-tools">
+    <!-- <div class="rp-search">
+      <app-icon name="search" [size]="16"/>
+      <input placeholder="Search…"/>
+      <kbd>⌘K</kbd>
+    </div> -->
+
+    <!-- Notifications -->
+    <div class="rp-pop-wrap">
+      <button class="rp-icon-btn" (click)="toggleNotif($event)" aria-label="Notifications">
+        <app-icon name="bell" [size]="16"/>
+        <span class="rp-notif-badge">{{ alerts().length }}</span>
+      </button>
+
+      @if (notifOpen()) {
+        <div class="rp-pop rp-pop-notif" (click)="$event.stopPropagation()">
+          <div class="rp-pop-notif-head">
+            <div>
+              <div class="rp-pop-title">Notification Center</div>
+              <div class="rp-pop-sub">{{ alerts().length }} events today</div>
+            </div>
+            <button class="rp-pill-btn">Mark all as read</button>
+          </div>
+          <div class="rp-pop-list">
+            @for (a of alerts(); track a.id) {
+              <div class="rp-pop-alert" [class]="'is-' + a.level">
+                <span class="rp-pop-alert-dot"></span>
+                <div class="rp-pop-alert-body">
+                  <div class="rp-pop-alert-row">
+                    <span class="rp-pop-alert-train">{{ a.train }}</span>
+                    <span class="rp-pop-alert-time">{{ a.time }}</span>
+                  </div>
+                  <div class="rp-pop-alert-msg">{{ a.msg }}</div>
+                </div>
+              </div>
+            }
+          </div>
+          <button class="rp-pop-foot">View all alerts <app-icon name="arrow" [size]="14"/></button>
+        </div>
+      }
+    </div>
+
+    <!-- Profile -->
+    <div class="rp-pop-wrap">
+      <button class="rp-profile-btn" (click)="toggleProfile($event)">
+        <span class="rp-avatar">{{ user().initials }}</span>
+        <span class="rp-profile-meta">
+          <span class="rp-profile-name">{{ user().name }}</span>
+        </span>
+        <app-icon name="chevronD" [size]="14"/>
+      </button>
+
+      @if (profileOpen()) {
+        <div class="rp-pop rp-pop-profile" (click)="$event.stopPropagation()">
+          <div class="rp-pop-prof-head">
+            <span class="rp-avatar rp-avatar-lg">{{ user().initials }}</span>
+            <div>
+              <div class="rp-pop-name">{{ user().name }}</div>
+              <div class="rp-pop-mail">{{ user().email }}</div>
+              <div class="rp-pop-role">{{ user().role }}</div>
+            </div>
+          </div>
+          <div class="rp-pop-divider"></div>
+          <button class="rp-pop-item" routerLink="/profile" (click)="profileOpen.set(false)">
+            <app-icon name="user" [size]="14"/> My Profile
+          </button>
+          <button class="rp-pop-item rp-pop-item-out" (click)="logout()">
+            <app-icon name="logout" [size]="14"/> Sign Out
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</header>
