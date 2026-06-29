@@ -1,0 +1,22 @@
+# Overrides for the Docker Compose environment.
+# Active when SPRING_PROFILES_ACTIVE=docker (set in docker-compose.yml).
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/railway_db
+    username: fleet_user
+    password: fleet_pass
+
+  data:
+    redis:
+      host: redis
+      port: 6379
+
+  kafka:
+    bootstrap-servers: kafka:9092
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/fleet-management

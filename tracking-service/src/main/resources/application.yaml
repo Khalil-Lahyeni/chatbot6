@@ -1,0 +1,119 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: tracking-service
+
+  # ── PostgreSQL ──────────────────────────────────────────────────────────────
+  datasource:
+    url: jdbc:postgresql://localhost:5431/railway_db
+    username: fleet_user
+    password: fleet_pass
+
+  jpa:
+    hibernate:
+      ddl-auto: validate   # Flyway owns the schema; Hibernate only validates
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  # ── Flyway ──────────────────────────────────────────────────────────────────
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  # ── Redis (standalone — no TTL, infinite dedup window) ─────────────────────
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  # ── Kafka ───────────────────────────────────────────────────────────────────
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: train-consumer-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all          # strongest durability guarantee
+      retries: 3
+    listener:
+      ack-mode: RECORD   # commit after each record is processed
+
+  # ── Spring Security / OAuth2 Resource Server ────────────────────────────────
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/fleet-management
+
+# ── Actuator ────────────────────────────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+  health:
+    redis:
+      enabled: true
+    kafka:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+
+# ── Tracking service domain properties ──────────────────────────────────────
+tracking:
+
+  # Train resolver behaviour
+  train:
+    auto-register-unknown: true   # false in prod: unknown trainIds trigger retry + DLT
+
+  # Kafka: topic names, consumer, and retry tuning
+  kafka:
+    consumer:
+      group-id: train-consumer-group
+      concurrency: 1              # listener threads per @KafkaListener
+    topics:
+      location: train-location    # inbound: raw GPS/station updates
+      system-status: train-status # inbound: PACIS / CCTV / rear-view status
+      events: train-events        # outbound: processed domain events
+      dlt-suffix: .DLT            # appended to source topic to form Dead Letter Topic
+      events-partitions: 3        # partition count for the events output topic
+      events-replicas: 1
+      dlt-partitions: 1           # partition count for DLT topics
+      dlt-replicas: 1
+      train-message: train-message  # inbound: train messages — all persisted, no dedup
+    retry:
+      interval-ms: 1000           # fixed delay between retry attempts
+      max-retries: 2              # re-attempts after the first failure (total = 3)
+
+  # Redis: deduplication key structure
+  redis:
+    dedup-key-prefix: dedup       # full key: {prefix}:{messageType}:{trainId}
+
+  # Train message processing
+  train-message:
+    critical-keywords:
+      - Failure
+      - Brake
+      - Emergency
+      - Stop
+      - Derailment
+      - Fire
+
+# ── Logging (structured JSON via logstash-logback-encoder) ───────────────────
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.actia.tracking_service: INFO
+    org.springframework.kafka: WARN

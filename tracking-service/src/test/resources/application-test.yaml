@@ -1,0 +1,25 @@
+# Test profile — overridden at runtime by @DynamicPropertySource in each IT class.
+# Static overrides that apply to all tests:
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate   # Flyway runs migrations; Hibernate only validates
+    show-sql: true
+
+  flyway:
+    enabled: true
+
+  # Disable the OAuth2 issuer discovery call at context startup.
+  # The real issuer-uri is overridden per-test via @DynamicPropertySource.
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost/test-issuer
+
+logging:
+  level:
+    com.actia.tracking_service: DEBUG
+    org.springframework.kafka: INFO
+    org.testcontainers: INFO

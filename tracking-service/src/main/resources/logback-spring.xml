@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- JSON appender — one JSON object per line, ECS-compatible via logstash-logback-encoder -->
+    <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <!-- Include MDC fields so trainId/messageType show up in every log line -->
+            <includeMdcKeyName>trainId</includeMdcKeyName>
+            <includeMdcKeyName>messageType</includeMdcKeyName>
+            <!-- Suppress the verbose logstash version field -->
+            <includeContext>false</includeContext>
+        </encoder>
+    </appender>
+
+    <!-- Plain-text appender used during local development (non-docker) -->
+    <appender name="PLAIN_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Use JSON in Docker/production; plain text locally -->
+    <springProfile name="docker,prod">
+        <root level="INFO">
+            <appender-ref ref="JSON_CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="!docker &amp; !prod">
+        <root level="INFO">
+            <appender-ref ref="PLAIN_CONSOLE"/>
+        </root>
+        <logger name="com.actia.tracking_service" level="DEBUG" additivity="false">
+            <appender-ref ref="PLAIN_CONSOLE"/>
+        </logger>
+    </springProfile>
+
+</configuration>
