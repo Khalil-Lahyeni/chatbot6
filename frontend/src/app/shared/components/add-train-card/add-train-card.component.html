@@ -1,0 +1,79 @@
+@if (!isOpen()) {
+
+  <!-- ── State 1: Placeholder ── -->
+  <button class="add-placeholder" (click)="open()" aria-label="Add new train">
+    <div class="add-placeholder__circle">
+      <app-icon name="plus" [size]="22" [stroke]="1.8" />
+    </div>
+    <span class="add-placeholder__label">Add New Train</span>
+  </button>
+
+} @else {
+
+  <!-- ── State 2: Form card ── -->
+  <div class="add-form-card">
+
+    <div class="card-header">
+      <app-icon name="train" [size]="20" class="train-icon" />
+      <input
+        type="text"
+        class="inline-input header-title-input"
+        placeholder="Train name (e.g. TGV-003)"
+        [value]="formName()"
+        (input)="formName.set($any($event.target).value)" />
+    </div>
+
+    <div class="train-id-row">
+      <span class="info-label">Train ID:</span>
+      <input
+        type="number"
+        class="inline-input train-id-input"
+        placeholder="Numeric ID (e.g. 3)"
+        min="1"
+        [value]="formTrainId()"
+        (input)="formTrainId.set($any($event.target).value)" />
+    </div>
+
+    <div class="card-body">
+      <div class="info-column">
+        <span class="info-label">Mission:</span>
+        <input
+          type="text"
+          class="inline-input info-value-input"
+          placeholder="e.g. Local"
+          [value]="formMission()"
+          (input)="formMission.set($any($event.target).value)" />
+      </div>
+      <div class="info-column">
+        <span class="info-label">Diversity:</span>
+        <input
+          type="text"
+          class="inline-input info-value-input"
+          placeholder="e.g. High"
+          [value]="formDiversity()"
+          (input)="formDiversity.set($any($event.target).value)" />
+      </div>
+      <div class="info-column">
+        <span class="info-label">Baseline:</span>
+        <input
+          type="text"
+          class="inline-input info-value-input"
+          placeholder="e.g. 1.2.3"
+          [value]="formBaseline()"
+          (input)="formBaseline.set($any($event.target).value)" />
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="form-actions">
+        <button class="save-btn" [disabled]="!isValid()" (click)="save()">
+          <span>Save</span>
+          <app-icon name="arrow" [size]="14" class="arrow-icon" />
+        </button>
+        <button class="cancel-btn" (click)="cancel()">✕ Cancel</button>
+      </div>
+    </div>
+
+  </div>
+
+}

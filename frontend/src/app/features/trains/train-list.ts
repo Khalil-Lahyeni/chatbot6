@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } 
 import { CommonModule } from '@angular/common';
 import { Train } from '../../shared/models/train.model';
 import { TrainCardComponent } from '../../shared/components/train-card/train-card.component';
+import { AddTrainCardComponent } from '../../shared/components/add-train-card/add-train-card.component';
 import { TrainFilterService } from '../../core/services/train-filter.service';
 import { TrainService } from '../../core/services/train.service';
 
 @Component({
   selector: 'app-train-list',
   standalone: true,
-  imports: [CommonModule, TrainCardComponent],
+  imports: [CommonModule, TrainCardComponent, AddTrainCardComponent],
   templateUrl: './train-list.html',
   styleUrl: './train-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -72,6 +73,12 @@ export class TrainListComponent implements OnInit {
 
     return result;
   });
+
+  onTrainCreated(newTrain: Train): void {
+    this.trainService.createTrain(newTrain).subscribe((saved) => {
+      this.trains.update((list) => [...list, saved]);
+    });
+  }
 
   onTrainUpdated(updated: Train): void {
     this.trainService.updateTrain(updated.id, updated).subscribe((saved) => {

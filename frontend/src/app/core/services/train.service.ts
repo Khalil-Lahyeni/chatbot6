@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Train } from '../../shared/models/train.model';
 
 export interface TrainResponse {
-  id: number;
+  trainId: number;
   name: string;
   mission: string;
   baseline?: string;
@@ -15,6 +15,7 @@ export interface TrainResponse {
 }
 
 export interface TrainRequest {
+  trainId: number;
   name: string;
   mission: string;
   baseline?: string;
@@ -36,13 +37,11 @@ export interface Page<T> {
 export class TrainService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = environment.apiGatewayUrl;
+  private readonly trainsUrl = `${this.baseUrl}${environment.api.trains}`;
 
-  /**
-   * Fetches the page of trains and maps them to the frontend Train model.
-   */
   getTrains(page: number = 0, size: number = 100): Observable<Train[]> {
     return this.http
-      .get<Page<TrainResponse>>(`${this.baseUrl}/api/monitoring/trains`, {
+      .get<Page<TrainResponse>>(`${this.trainsUrl}`, {
         params: {
           page: page.toString(),
           size: size.toString(),
@@ -56,11 +55,23 @@ export class TrainService {
       );
   }
 
-  /**
-   * Updates a train details via PUT endpoint.
-   */
+  createTrain(train: Train): Observable<Train> {
+    const request: TrainRequest = {
+      trainId: train.id,
+      name: train.trainName,
+      mission: train.mission,
+      baseline: train.baseline,
+      diversity: train.diversity,
+      database: train.database,
+    };
+    return this.http
+      .post<TrainResponse>(`${this.trainsUrl}`, request)
+      .pipe(map((res) => this.mapResponseToTrain(res)));
+  }
+
   updateTrain(id: number, train: Train): Observable<Train> {
     const request: TrainRequest = {
+      trainId: id,
       name: train.trainName,
       mission: train.mission,
       baseline: train.baseline,
@@ -69,24 +80,20 @@ export class TrainService {
     };
 
     return this.http
-      .put<TrainResponse>(`${this.baseUrl}/api/monitoring/trains/${id}`, request)
+      .put<TrainResponse>(`${this.trainsUrl}/${id}`, request)
       .pipe(map((res) => this.mapResponseToTrain(res)));
   }
 
-  /**
-   * Maps backend TrainResponse to the UI Train model.
-   */
   private mapResponseToTrain(res: TrainResponse): Train {
     return {
-      id: res.id,
+      id: res.trainId,
       trainName: res.name,
       mission: res.mission,
       diversity: res.diversity || '',
       baseline: res.baseline || '',
       database: res.database || '',
       updateAt: res.updateAt,
-      // Status remains static as it is not present in the backend API
-      status: res.id % 2 === 0 ? 'Stopped' : 'In operation',
+      status: res.trainId % 2 === 0 ? 'Stopped' : 'In operation',
     };
   }
 }

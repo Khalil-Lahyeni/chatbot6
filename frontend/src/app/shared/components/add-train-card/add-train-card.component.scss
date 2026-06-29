@@ -1,0 +1,230 @@
+// ── State 1: Placeholder ─────────────────────────────────────────────────────
+
+.add-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 224px; // visually matches train-card height
+  background: var(--c-surface);
+  border: 1.5px dashed var(--c-bd);
+  border-radius: var(--r-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  color: var(--c-fg-soft);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease,
+              box-shadow 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    border-color: var(--c-accent);
+    background: var(--c-accent-bg);
+    color: var(--c-accent);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+
+    .add-placeholder__circle {
+      background: var(--c-accent);
+      color: #fff;
+      border-color: transparent;
+    }
+  }
+
+  &__circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1.5px dashed var(--c-bd-2);
+    display: grid;
+    place-items: center;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  &__label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+}
+
+// ── State 2: Form card ────────────────────────────────────────────────────────
+
+.add-form-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-bd);
+  border-radius: var(--r-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0; // gaps controlled by child margins
+
+  // ── Shared input base ──
+  .inline-input {
+    background: var(--c-surface);
+    border: 1px solid var(--c-bd-2);
+    border-radius: 6px;
+    padding: 4px 8px;
+    color: var(--c-fg);
+    width: 100%;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    font-family: inherit;
+
+    &:focus {
+      border-color: var(--c-accent);
+      box-shadow: 0 0 0 3px var(--c-accent-bg);
+    }
+
+    &::placeholder {
+      color: var(--c-fg-soft);
+      font-weight: 400;
+    }
+  }
+
+  // ── Header ──
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--c-accent);
+    margin-bottom: 14px;
+
+    .train-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .header-title-input {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--c-accent);
+      height: 30px;
+      flex: 1;
+    }
+  }
+
+  // ── Train ID row ──
+  .train-id-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+
+    .info-label {
+      font-size: 11px;
+      color: var(--c-fg-mute);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .train-id-input {
+      font-size: 13px;
+      font-weight: 600;
+      height: 28px;
+      max-width: 160px;
+
+      // hide browser number arrows
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+      }
+      -moz-appearance: textfield;
+    }
+  }
+
+  // ── Body ──
+  .card-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+
+    .info-column {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .info-label {
+        font-size: 11px;
+        color: var(--c-fg-mute);
+        font-weight: 500;
+      }
+
+      .info-value-input {
+        font-size: 13.5px;
+        font-weight: 600;
+        height: 28px;
+      }
+    }
+  }
+
+  // ── Footer ──
+  .card-footer {
+    padding-top: 14px;
+    border-top: 1px dashed var(--c-bd);
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .save-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        background: oklch(0.48 0.12 190);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        font-family: inherit;
+        border: 0;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.15s ease, box-shadow 0.15s ease;
+
+        &:hover:not(:disabled) {
+          background: oklch(0.40 0.12 190);
+          box-shadow: 0 0 0 4px oklch(0.48 0.12 190 / 0.15);
+        }
+
+        &:disabled {
+          opacity: 0.45;
+          cursor: not-allowed;
+        }
+
+        .arrow-icon {
+          display: inline-flex;
+          align-items: center;
+        }
+      }
+
+      .cancel-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 14px;
+        background: var(--c-bg-2);
+        border: 1px solid var(--c-bd);
+        border-radius: 6px;
+        color: var(--c-fg-mute);
+        font-size: 12px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+        &:hover {
+          background: var(--c-bg-3);
+          border-color: var(--c-bd-2);
+          color: var(--c-fg);
+        }
+      }
+    }
+  }
+}

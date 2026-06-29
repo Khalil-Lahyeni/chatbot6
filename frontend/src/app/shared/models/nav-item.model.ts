@@ -1,7 +1,7 @@
 export type IconName =
   | 'grid' | 'radio' | 'wrench' | 'alert' | 'settings'
   | 'bell' | 'search' | 'user' | 'logout' | 'chevron'
-  | 'chevronD' | 'check' | 'dot' | 'arrow' | 'train' | 'filter' | 'sort' | 'edit';
+  | 'chevronD' | 'check' | 'dot' | 'arrow' | 'train' | 'filter' | 'sort' | 'edit' | 'plus';
 
 export interface NavItem {
   id: string;
