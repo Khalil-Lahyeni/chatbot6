@@ -16,16 +16,12 @@ export class AddTrainCardComponent {
 
   readonly isOpen = signal(false);
 
-  readonly formTrainId   = signal('');
   readonly formName      = signal('');
   readonly formMission   = signal('');
   readonly formDiversity = signal('');
   readonly formBaseline  = signal('');
 
-  readonly isValid = computed(() => {
-    const id = Number(this.formTrainId().trim());
-    return Number.isInteger(id) && id > 0 && this.formName().trim().length > 0;
-  });
+  readonly isValid = computed(() => this.formName().trim().length > 0);
 
   open(): void {
     this.isOpen.set(true);
@@ -39,7 +35,7 @@ export class AddTrainCardComponent {
   save(): void {
     if (!this.isValid()) return;
     const train: Train = {
-      id: Number(this.formTrainId().trim()),
+      id: 0, // assigned by backend sequence — placeholder until response returns
       trainName: this.formName().trim(),
       mission: this.formMission().trim(),
       diversity: this.formDiversity().trim(),
@@ -52,7 +48,6 @@ export class AddTrainCardComponent {
   }
 
   private reset(): void {
-    this.formTrainId.set('');
     this.formName.set('');
     this.formMission.set('');
     this.formDiversity.set('');

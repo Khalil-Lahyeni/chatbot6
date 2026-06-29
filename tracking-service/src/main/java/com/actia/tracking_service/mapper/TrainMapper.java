@@ -28,7 +28,6 @@ public class TrainMapper {
 
     public Train toEntity(TrainRequest request) {
         return Train.builder()
-                .trainId(request.trainId())
                 .name(request.name())
                 .mission(request.mission())
                 .baseline(request.baseline())

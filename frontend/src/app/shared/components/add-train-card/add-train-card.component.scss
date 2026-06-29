@@ -109,35 +109,6 @@
     }
   }
 
-  // ── Train ID row ──
-  .train-id-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 14px;
-
-    .info-label {
-      font-size: 11px;
-      color: var(--c-fg-mute);
-      font-weight: 500;
-      white-space: nowrap;
-    }
-
-    .train-id-input {
-      font-size: 13px;
-      font-weight: 600;
-      height: 28px;
-      max-width: 160px;
-
-      // hide browser number arrows
-      &::-webkit-inner-spin-button,
-      &::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-      }
-      -moz-appearance: textfield;
-    }
-  }
-
   // ── Body ──
   .card-body {
     display: grid;

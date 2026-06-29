@@ -10,7 +10,7 @@
     <div class="card-header">
       <app-icon name="train" [size]="20" class="train-icon" />
       @if (!isEditing()) {
-        <span class="header-title">{{ train().trainName }}</span>
+        <span class="header-title">{{ train().trainName }}-{{ train().id }}</span>
       } @else {
         <input
           type="text"

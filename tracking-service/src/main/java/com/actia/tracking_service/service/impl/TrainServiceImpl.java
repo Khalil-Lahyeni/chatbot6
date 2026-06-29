@@ -3,7 +3,6 @@ package com.actia.tracking_service.service.impl;
 import com.actia.tracking_service.dto.TrainRequest;
 import com.actia.tracking_service.dto.TrainResponse;
 import com.actia.tracking_service.entity.Train;
-import com.actia.tracking_service.exception.TrainAlreadyExistsException;
 import com.actia.tracking_service.exception.TrainNotFoundException;
 import com.actia.tracking_service.mapper.TrainMapper;
 import com.actia.tracking_service.repository.TrainRepository;
@@ -26,10 +25,9 @@ public class TrainServiceImpl implements TrainService {
     @Override
     @Transactional
     public TrainResponse createTrain(TrainRequest request) {
-        if (trainRepository.existsById(request.trainId())) {
-            throw new TrainAlreadyExistsException(request.trainId());
-        }
-        Train saved = trainRepository.save(trainMapper.toEntity(request));
+        Train entity = trainMapper.toEntity(request);
+        entity.setTrainId(trainRepository.nextTrainId());
+        Train saved = trainRepository.save(entity);
         log.info("Train created — trainId={}", saved.getTrainId());
         return trainMapper.toResponse(saved);
     }

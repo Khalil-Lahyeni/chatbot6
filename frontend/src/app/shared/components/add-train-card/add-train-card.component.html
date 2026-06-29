@@ -23,17 +23,6 @@
         (input)="formName.set($any($event.target).value)" />
     </div>
 
-    <div class="train-id-row">
-      <span class="info-label">Train ID:</span>
-      <input
-        type="number"
-        class="inline-input train-id-input"
-        placeholder="Numeric ID (e.g. 3)"
-        min="1"
-        [value]="formTrainId()"
-        (input)="formTrainId.set($any($event.target).value)" />
-    </div>
-
     <div class="card-body">
       <div class="info-column">
         <span class="info-label">Mission:</span>

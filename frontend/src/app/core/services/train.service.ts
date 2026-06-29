@@ -15,7 +15,6 @@ export interface TrainResponse {
 }
 
 export interface TrainRequest {
-  trainId: number;
   name: string;
   mission: string;
   baseline?: string;
@@ -57,7 +56,6 @@ export class TrainService {
 
   createTrain(train: Train): Observable<Train> {
     const request: TrainRequest = {
-      trainId: train.id,
       name: train.trainName,
       mission: train.mission,
       baseline: train.baseline,
@@ -71,7 +69,6 @@ export class TrainService {
 
   updateTrain(id: number, train: Train): Observable<Train> {
     const request: TrainRequest = {
-      trainId: id,
       name: train.trainName,
       mission: train.mission,
       baseline: train.baseline,
