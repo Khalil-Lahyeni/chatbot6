@@ -1,0 +1,73 @@
+@if (loading()) {
+  <div class="td-loading">
+    <div class="td-spinner"></div>
+    <span>Loading train data…</span>
+  </div>
+} @else if (error()) {
+  <div class="td-error">
+    <p>{{ error() }}</p>
+    <button class="td-back-btn" (click)="goBack()">← Back to fleet</button>
+  </div>
+} @else if (train()) {
+
+  <div class="td-page">
+
+    <!-- ── Header ─────────────────────────────────────────────── -->
+    <div class="td-header">
+      <button class="td-back-btn" (click)="goBack()" aria-label="Back to fleet">
+        <span class="td-back-icon">
+          <app-icon name="arrow" [size]="16" [stroke]="2" />
+        </span>
+        Fleet
+      </button>
+
+      <div class="td-title">
+        <app-icon name="train" [size]="22" class="td-train-icon" />
+        <h1 class="td-train-name">{{ train()!.trainName }}-{{ train()!.id }}</h1>
+        <div class="td-status-badge" [ngClass]="statusClass()">
+          <span class="td-status-dot"></span>
+          <span>{{ train()!.status }}</span>
+        </div>
+      </div>
+
+      @if (train()!.updateAt) {
+        <span class="td-updated">Last updated: {{ train()!.updateAt | date:'short' }}</span>
+      }
+    </div>
+
+    <!-- ── Info strip ─────────────────────────────────────────── -->
+    <div class="td-info-strip">
+      <div class="td-info-item">
+        <span class="td-info-label">Mission</span>
+        <span class="td-info-value">{{ train()!.mission || '—' }}</span>
+      </div>
+      <div class="td-divider"></div>
+      <div class="td-info-item">
+        <span class="td-info-label">Diversity</span>
+        <span class="td-info-value">{{ train()!.diversity || '—' }}</span>
+      </div>
+      <div class="td-divider"></div>
+      <div class="td-info-item">
+        <span class="td-info-label">Baseline</span>
+        <span class="td-info-value">{{ train()!.baseline || '—' }}</span>
+      </div>
+      <div class="td-divider"></div>
+      <div class="td-info-item">
+        <span class="td-info-label">Database</span>
+        <span class="td-info-value">{{ train()!.database || '—' }}</span>
+      </div>
+    </div>
+
+    <!-- ── Grafana iframe ─────────────────────────────────────── -->
+    <div class="td-grafana-wrapper">
+      <iframe
+        [src]="grafanaUrl() | trustUrl"
+        title="Train Dashboard"
+        class="td-grafana-frame"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+  </div>
+}

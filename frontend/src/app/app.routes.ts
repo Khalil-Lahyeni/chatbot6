@@ -22,7 +22,7 @@ export const routes: Routes = [
   {
     path: 'train/:id',
     loadComponent: () =>
-      import('./features/dashboard/dashboard').then((m) => m.Dashboard),
+      import('./features/train-dashboard/train-dashboard').then((m) => m.TrainDashboardComponent),
     canActivate: [authGuard],
   },
   {

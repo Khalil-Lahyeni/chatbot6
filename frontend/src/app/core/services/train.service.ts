@@ -38,6 +38,12 @@ export class TrainService {
   private readonly baseUrl = environment.apiGatewayUrl;
   private readonly trainsUrl = `${this.baseUrl}${environment.api.trains}`;
 
+  getTrainById(id: number): Observable<Train> {
+    return this.http
+      .get<TrainResponse>(`${this.trainsUrl}/${id}`)
+      .pipe(map((res) => this.mapResponseToTrain(res)));
+  }
+
   getTrains(page: number = 0, size: number = 100): Observable<Train[]> {
     return this.http
       .get<Page<TrainResponse>>(`${this.trainsUrl}`, {
