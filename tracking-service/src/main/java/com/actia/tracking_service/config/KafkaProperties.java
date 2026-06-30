@@ -72,6 +72,10 @@ public class KafkaProperties {
         private int dltReplicas = 1;
         /** Inbound topic: raw train messages (all persisted, no dedup). */
         private String trainMessage = "train-message";
+        /** Inbound topic: train configuration updates (no dedup). */
+        private String configuration = "train-configuration";
+        /** Inbound topic: media database updates (no dedup). */
+        private String mediaDatabase = "train-media-database";
     }
 
     @Getter

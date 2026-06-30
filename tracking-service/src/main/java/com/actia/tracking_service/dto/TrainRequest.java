@@ -12,4 +12,4 @@ public record TrainRequest(
         String baseline,
         String diversity,
         String database
-) {}
+) {}    

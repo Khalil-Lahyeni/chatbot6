@@ -53,6 +53,24 @@ public class KafkaConfig {
                 .build();
     }
 
+    @Bean
+    public NewTopic trainConfigurationDlt() {
+        KafkaProperties.Topics t = kafkaProperties.getTopics();
+        return TopicBuilder.name(t.getConfiguration() + t.getDltSuffix())
+                .partitions(t.getDltPartitions())
+                .replicas(t.getDltReplicas())
+                .build();
+    }
+
+    @Bean
+    public NewTopic trainMediaDatabaseDlt() {
+        KafkaProperties.Topics t = kafkaProperties.getTopics();
+        return TopicBuilder.name(t.getMediaDatabase() + t.getDltSuffix())
+                .partitions(t.getDltPartitions())
+                .replicas(t.getDltReplicas())
+                .build();
+    }
+
     // ── Listener container factory ────────────────────────────────────────────
 
     @Bean

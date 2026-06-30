@@ -92,7 +92,9 @@ tracking:
       events-replicas: 1
       dlt-partitions: 1           # partition count for DLT topics
       dlt-replicas: 1
-      train-message: train-message  # inbound: train messages — all persisted, no dedup
+      train-message: train-message        # inbound: train messages — all persisted, no dedup
+      configuration: train-configuration  # inbound: train configuration updates, no dedup
+      media-database: train-media-database # inbound: media database updates, no dedup
     retry:
       interval-ms: 1000           # fixed delay between retry attempts
       max-retries: 2              # re-attempts after the first failure (total = 3)
