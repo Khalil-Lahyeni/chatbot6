@@ -6,7 +6,10 @@ import com.actia.tracking_service.entity.Train;
 import com.actia.tracking_service.entity.TrainConfiguration;
 import com.actia.tracking_service.publisher.EventPublisher;
 import com.actia.tracking_service.repository.TrainConfigurationRepository;
+import com.actia.tracking_service.repository.TrainRepository;
 import com.actia.tracking_service.service.TrainConfigurationProcessor;
+
+import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,12 +27,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class TrainConfigurationProcessorImpl implements TrainConfigurationProcessor {
 
     private final TrainResolver                  trainResolver;
+    private final TrainRepository                trainRepository;
     private final TrainConfigurationRepository   configRepository;
     private final EventPublisher                 eventPublisher;
 
     @Override
     @Transactional
     public void process(TrainConfigurationDto dto) {
+        trainRepository.touch(dto.getTrainId(), Instant.now());
+
         Train train = trainResolver.resolveOrCreate(dto.getTrainId());
 
         TrainConfiguration entity = TrainConfiguration.builder()

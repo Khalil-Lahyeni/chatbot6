@@ -6,8 +6,11 @@ import com.actia.tracking_service.entity.Train;
 import com.actia.tracking_service.entity.TrainMessage;
 import com.actia.tracking_service.publisher.EventPublisher;
 import com.actia.tracking_service.repository.TrainMessageRepository;
+import com.actia.tracking_service.repository.TrainRepository;
 import com.actia.tracking_service.service.TrainMessageProcessor;
 import com.actia.tracking_service.strategy.CriticalEventDetector;
+
+import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TrainMessageProcessorImpl implements TrainMessageProcessor {
 
     private final TrainResolver          trainResolver;
+    private final TrainRepository        trainRepository;
     private final TrainMessageRepository messageRepository;
     private final CriticalEventDetector  criticalDetector;
     private final EventPublisher         eventPublisher;
@@ -37,6 +41,8 @@ public class TrainMessageProcessorImpl implements TrainMessageProcessor {
     @Override
     @Transactional
     public void process(TrainMessageDto dto) {
+        trainRepository.touch(dto.getTrainId(), Instant.now());
+
         Train train = trainResolver.resolveOrCreate(dto.getTrainId());
 
         boolean critical = criticalDetector.isCritical(dto.getMessageName());

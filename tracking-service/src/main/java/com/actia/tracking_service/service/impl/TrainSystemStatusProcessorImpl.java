@@ -7,10 +7,13 @@ import com.actia.tracking_service.entity.Train;
 import com.actia.tracking_service.entity.TrainSystemStatus;
 import com.actia.tracking_service.enums.UpdateStatus;
 import com.actia.tracking_service.publisher.EventPublisher;
+import com.actia.tracking_service.repository.TrainRepository;
 import com.actia.tracking_service.repository.TrainSystemStatusRepository;
 import com.actia.tracking_service.service.DeduplicationService;
 import com.actia.tracking_service.service.TrainSystemStatusProcessor;
 import com.actia.tracking_service.strategy.HashContentExtractor;
+
+import java.time.Instant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,12 +33,15 @@ public class TrainSystemStatusProcessorImpl implements TrainSystemStatusProcesso
     private final DeduplicationService                     dedupService;
     private final TrainResolver                            trainResolver;
     private final TrainSystemStatusRepository              statusRepository;
+    private final TrainRepository                          trainRepository;
     private final EventPublisher                           eventPublisher;
     private final HashContentExtractor<TrainSystemStatusDto> hashExtractor;
 
     @Transactional
     @Override
     public void process(TrainSystemStatusDto dto) {
+        trainRepository.touch(dto.getTrainId(), Instant.now());
+
         String trainIdStr = String.valueOf(dto.getTrainId());
         String content    = hashExtractor.extract(dto);
 

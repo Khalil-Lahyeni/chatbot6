@@ -24,6 +24,18 @@ export class TrainCardComponent {
   editDiversity = signal('');
   editBaseline = signal('');
 
+  get lastUpdatedLabel(): string {
+    const raw = this.train().updateAt;
+    if (!raw) return 'Never updated';
+    const diffMs = Date.now() - new Date(raw).getTime();
+    const mins   = Math.floor(diffMs / 60_000);
+    if (mins < 1)   return 'Just now';
+    if (mins < 60)  return `${mins} min ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs  < 24)  return `${hrs} h ago`;
+    return `${Math.floor(hrs / 24)} d ago`;
+  }
+
   get statusClass(): string {
     const status = this.train().status?.toLowerCase() || '';
     if (status.includes('operation') || status.includes('running') || status.includes('ok')) {

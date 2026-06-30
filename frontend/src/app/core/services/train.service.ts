@@ -96,7 +96,9 @@ export class TrainService {
       baseline: res.baseline || '',
       database: res.database || '',
       updateAt: res.updateAt,
-      status: res.trainId % 2 === 0 ? 'Stopped' : 'In operation',
+      status: !res.updateAt || (Date.now() - new Date(res.updateAt).getTime()) > 3 * 60 * 1000
+        ? 'Stopped'
+        : 'In operation',
     };
   }
 }
