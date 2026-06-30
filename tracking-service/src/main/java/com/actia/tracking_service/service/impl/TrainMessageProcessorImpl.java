@@ -4,6 +4,7 @@ import com.actia.tracking_service.common.TrainResolver;
 import com.actia.tracking_service.dto.TrainMessageDto;
 import com.actia.tracking_service.entity.Train;
 import com.actia.tracking_service.entity.TrainMessage;
+import com.actia.tracking_service.publisher.EventPublisher;
 import com.actia.tracking_service.repository.TrainMessageRepository;
 import com.actia.tracking_service.service.TrainMessageProcessor;
 import com.actia.tracking_service.strategy.CriticalEventDetector;
@@ -31,6 +32,7 @@ public class TrainMessageProcessorImpl implements TrainMessageProcessor {
     private final TrainResolver          trainResolver;
     private final TrainMessageRepository messageRepository;
     private final CriticalEventDetector  criticalDetector;
+    private final EventPublisher         eventPublisher;
 
     @Override
     @Transactional
@@ -47,8 +49,9 @@ public class TrainMessageProcessorImpl implements TrainMessageProcessor {
                 .build();
 
         messageRepository.save(entity);
-
         log.info("TrainMessage persisted — trainId={} type='{}' name='{}' critical={}",
                 dto.getTrainId(), dto.getMessageType(), dto.getMessageName(), critical);
+
+        eventPublisher.publish(String.valueOf(dto.getTrainId()), dto);
     }
 }
