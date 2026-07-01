@@ -36,11 +36,6 @@ public class TrainAiStateServiceImpl implements TrainAiStateService {
     // ── Public API ─────────────────────────────────────────────────────────────
 
     @Override
-    public void onLocation(Long trainId) {
-        updateAndPublish(trainId, state -> { /* no fields to update for location */ });
-    }
-
-    @Override
     public void onSystemStatus(Long trainId, TrainSystemStatusDto dto) {
         updateAndPublish(trainId, state -> {
             state.setPacisStatus(dto.getPacisStatus());

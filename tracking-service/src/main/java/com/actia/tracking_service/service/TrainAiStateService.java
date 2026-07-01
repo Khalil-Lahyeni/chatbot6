@@ -14,9 +14,6 @@ import java.time.Instant;
  */
 public interface TrainAiStateService {
 
-    /** Called on every train-location event. No fields change; triggers publish if state is complete. */
-    void onLocation(Long trainId);
-
     /** Called on every train-status event. Updates pacis/cctv/rearView/updateStatus. */
     void onSystemStatus(Long trainId, TrainSystemStatusDto dto);
 

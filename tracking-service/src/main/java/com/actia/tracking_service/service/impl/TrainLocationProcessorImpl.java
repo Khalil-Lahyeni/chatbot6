@@ -9,7 +9,6 @@ import com.actia.tracking_service.publisher.EventPublisher;
 import com.actia.tracking_service.repository.TrainLocationRepository;
 import com.actia.tracking_service.repository.TrainRepository;
 import com.actia.tracking_service.service.DeduplicationService;
-import com.actia.tracking_service.service.TrainAiStateService;
 import com.actia.tracking_service.service.TrainLocationProcessor;
 import com.actia.tracking_service.strategy.HashContentExtractor;
 
@@ -40,7 +39,6 @@ public class TrainLocationProcessorImpl implements TrainLocationProcessor {
     private final TrainLocationRepository            locationRepository;
     private final TrainRepository                    trainRepository;
     private final EventPublisher                     eventPublisher;
-    private final TrainAiStateService                aiStateService;
     private final HashContentExtractor<TrainLocationDto> hashExtractor;
 
     @Transactional
@@ -69,6 +67,5 @@ public class TrainLocationProcessorImpl implements TrainLocationProcessor {
         log.info("Saved TrainLocation for trainId={}", dto.getTrainId());
 
         eventPublisher.publish(trainIdStr, dto);
-        aiStateService.onLocation(dto.getTrainId());
     }
 }
