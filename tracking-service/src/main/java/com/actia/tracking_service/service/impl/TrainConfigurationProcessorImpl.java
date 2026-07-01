@@ -7,6 +7,7 @@ import com.actia.tracking_service.entity.TrainConfiguration;
 import com.actia.tracking_service.publisher.EventPublisher;
 import com.actia.tracking_service.repository.TrainConfigurationRepository;
 import com.actia.tracking_service.repository.TrainRepository;
+import com.actia.tracking_service.service.TrainAiStateService;
 import com.actia.tracking_service.service.TrainConfigurationProcessor;
 
 import java.time.Instant;
@@ -30,6 +31,7 @@ public class TrainConfigurationProcessorImpl implements TrainConfigurationProces
     private final TrainRepository                trainRepository;
     private final TrainConfigurationRepository   configRepository;
     private final EventPublisher                 eventPublisher;
+    private final TrainAiStateService            aiStateService;
 
     @Override
     @Transactional
@@ -49,5 +51,6 @@ public class TrainConfigurationProcessorImpl implements TrainConfigurationProces
         log.info("TrainConfiguration persisted — trainId={} visible={}", dto.getTrainId(), dto.isVisible());
 
         eventPublisher.publish(String.valueOf(dto.getTrainId()), dto);
+        aiStateService.onConfiguration(dto.getTrainId(), dto.isVisible());
     }
 }

@@ -8,6 +8,7 @@ import com.actia.tracking_service.publisher.EventPublisher;
 import com.actia.tracking_service.repository.MediaDatabaseRepository;
 import com.actia.tracking_service.repository.TrainRepository;
 import com.actia.tracking_service.service.MediaDatabaseProcessor;
+import com.actia.tracking_service.service.TrainAiStateService;
 
 import java.time.Instant;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class MediaDatabaseProcessorImpl implements MediaDatabaseProcessor {
     private final TrainRepository         trainRepository;
     private final MediaDatabaseRepository mediaRepository;
     private final EventPublisher          eventPublisher;
+    private final TrainAiStateService     aiStateService;
 
     @Override
     @Transactional
@@ -52,5 +54,8 @@ public class MediaDatabaseProcessorImpl implements MediaDatabaseProcessor {
                 dto.getTrainId(), dto.getName(), dto.getVersionNumber());
 
         eventPublisher.publish(String.valueOf(dto.getTrainId()), dto);
+
+        boolean hasMultipleActive = mediaRepository.countByTrain_TrainIdAndActiveTrue(dto.getTrainId()) > 1;
+        aiStateService.onMediaDatabase(dto.getTrainId(), hasMultipleActive);
     }
 }

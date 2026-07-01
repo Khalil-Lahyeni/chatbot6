@@ -27,4 +27,10 @@ public class RedisProperties {
      * Full key format: {@code {prefix}:{messageType}:{entityId}}.
      */
     private String dedupKeyPrefix = "dedup";
+
+    /**
+     * Prefix for AI state cache keys.
+     * Full key format: {@code {prefix}:{trainId}}.
+     */
+    private String aiStateKeyPrefix = "ai:train";
 }

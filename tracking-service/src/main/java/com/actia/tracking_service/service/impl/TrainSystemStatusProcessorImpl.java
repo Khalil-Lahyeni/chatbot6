@@ -10,6 +10,7 @@ import com.actia.tracking_service.publisher.EventPublisher;
 import com.actia.tracking_service.repository.TrainRepository;
 import com.actia.tracking_service.repository.TrainSystemStatusRepository;
 import com.actia.tracking_service.service.DeduplicationService;
+import com.actia.tracking_service.service.TrainAiStateService;
 import com.actia.tracking_service.service.TrainSystemStatusProcessor;
 import com.actia.tracking_service.strategy.HashContentExtractor;
 
@@ -35,6 +36,7 @@ public class TrainSystemStatusProcessorImpl implements TrainSystemStatusProcesso
     private final TrainSystemStatusRepository              statusRepository;
     private final TrainRepository                          trainRepository;
     private final EventPublisher                           eventPublisher;
+    private final TrainAiStateService                      aiStateService;
     private final HashContentExtractor<TrainSystemStatusDto> hashExtractor;
 
     @Transactional
@@ -64,5 +66,6 @@ public class TrainSystemStatusProcessorImpl implements TrainSystemStatusProcesso
         log.info("Saved TrainSystemStatus for trainId={}", dto.getTrainId());
 
         eventPublisher.publish(trainIdStr, dto);
+        aiStateService.onSystemStatus(dto.getTrainId(), dto);
     }
 }

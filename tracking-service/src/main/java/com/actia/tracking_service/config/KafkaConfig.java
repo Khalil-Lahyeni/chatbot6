@@ -27,6 +27,15 @@ public class KafkaConfig {
     }
 
     @Bean
+    public NewTopic trainAiEventsTopic() {
+        KafkaProperties.Topics t = kafkaProperties.getTopics();
+        return TopicBuilder.name(t.getAiEvents())
+                .partitions(t.getAiEventsPartitions())
+                .replicas(t.getAiEventsReplicas())
+                .build();
+    }
+
+    @Bean
     public NewTopic trainLocationDlt() {
         KafkaProperties.Topics t = kafkaProperties.getTopics();
         return TopicBuilder.name(t.getLocation() + t.getDltSuffix())

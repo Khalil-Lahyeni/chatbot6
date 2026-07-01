@@ -10,4 +10,6 @@ import java.util.List;
 public interface MediaDatabaseRepository extends JpaRepository<MediaDatabase, Long> {
 
     List<MediaDatabase> findByTrain_TrainIdOrderByUpdateAtDesc(Long trainId);
+
+    long countByTrain_TrainIdAndActiveTrue(Long trainId);
 }

@@ -60,12 +60,18 @@ public class KafkaProperties {
         private String systemStatus = "train-status";
         /** Outbound topic: processed domain events. */
         private String events = "train-events";
+        /** Outbound topic: AI microservice state snapshots. */
+        private String aiEvents = "train-ai-events";
         /** Suffix appended to source topic names to form Dead Letter Topics. */
         private String dltSuffix = ".DLT";
         /** Partition count for the events output topic. */
         private int eventsPartitions = 3;
         /** Replication factor for the events output topic. */
         private int eventsReplicas = 1;
+        /** Partition count for the AI events output topic. */
+        private int aiEventsPartitions = 3;
+        /** Replication factor for the AI events output topic. */
+        private int aiEventsReplicas = 1;
         /** Partition count for DLT topics. */
         private int dltPartitions = 1;
         /** Replication factor for DLT topics. */
